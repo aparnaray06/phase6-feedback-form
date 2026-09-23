@@ -2,23 +2,13 @@ import express from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 
-const app = express();
-
 dotenv.config();
 
+const app = express();
 
 // Middleware
 app.use(express.json());
 app.use(express.static("public"));
-
-// MongoDB connection
-mongoose.connect(process.env.MONGO_URI)
-    .then(() => {
-        console.log("MongoDB connected");
-    })
-    .catch((error) => {
-        console.log("MongoDB connection error:", error.message);
-    });
 
 // Schema
 const feedbackSchema = new mongoose.Schema({
@@ -40,23 +30,20 @@ app.post("/feedback", async (req, res) => {
         const newFeedback = new Feedback({
             name,
             rating,
-            comment
+            comment,
         });
+
         await newFeedback.save();
 
         res.status(201).json({
             message: "Feedback saved successfully",
         });
-    }
-    // catch (error) {
-    //     res.status(500).json({
-    //         error: "Something went wrong",
-    //     });
-    // }
-    catch (error) {
+
+    } catch (error) {
         console.error("POST /feedback ERROR:", error);
+
         res.status(500).json({
-            error: error.message
+            error: error.message,
         });
     }
 });
@@ -67,14 +54,17 @@ app.get("/feedback", async (req, res) => {
         const feedback = await Feedback.find();
 
         res.status(200).json(feedback);
+
     } catch (error) {
+        console.error("GET /feedback ERROR:", error);
+
         res.status(500).json({
             error: "Could not fetch feedback",
         });
     }
 });
 
-//PUT ROUT=======
+// PUT
 app.put("/feedback/:id", async (req, res) => {
     try {
         const { id } = req.params;
@@ -83,7 +73,7 @@ app.put("/feedback/:id", async (req, res) => {
         const rating = Number(req.body.rating);
         const comment = req.body.comment?.trim();
 
-        const updatFeedback = await Feedback.findByIdAndUpdate(
+        const updatedFeedback = await Feedback.findByIdAndUpdate(
             id,
             {
                 name,
@@ -91,58 +81,70 @@ app.put("/feedback/:id", async (req, res) => {
                 comment,
             },
             { new: true }
-        )
-        if (!updatFeedback) {
+        );
+
+        if (!updatedFeedback) {
             return res.status(404).json({
                 error: "Feedback not found",
             });
         }
+
         res.status(200).json({
-            message: "Successfull",
-            feedback: updatFeedback,
+            message: "Successful",
+            feedback: updatedFeedback,
         });
+
     } catch (error) {
-        console.log(error);
+        console.error("PUT /feedback ERROR:", error);
 
         res.status(500).json({
-            error: "Something went wrong"
-        })
+            error: error.message,
+        });
     }
-})
+});
 
-//DELETE ROUT
+// DELETE
 app.delete("/feedback/:id", async (req, res) => {
     try {
         const { id } = req.params;
 
-        const deleteFeedback = await Feedback.findByIdAndDelete(id);
+        const deletedFeedback = await Feedback.findByIdAndDelete(id);
 
-        // if(!deleteFeedback){
-        //     return res.status(404).json({
-        //         error:"Feedback not found",
-        //     })
-        // }
+        if (!deletedFeedback) {
+            return res.status(404).json({
+                error: "Feedback not found",
+            });
+        }
+
         res.status(200).json({
             message: "Feedback deleted successfully",
-        })
-        // if(!deleteFeedback){
-        //     return res.status(404).json({
-        //         error:"Feedback not found",
-        //     })
-        // }
+        });
 
     } catch (error) {
+        console.error("DELETE /feedback ERROR:", error);
+
         res.status(500).json({
-            error: "something went wrong"
-        })
+            error: error.message,
+        });
     }
-})
-
-// Start server
-const PORT = process.env.PORT || 8000;
-
-app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
 });
 
+// Start server after MongoDB connection
+const PORT = process.env.PORT || 8000;
 
+async function startServer() {
+    try {
+        await mongoose.connect(process.env.MONGO_URI);
+
+        console.log("MongoDB connected");
+
+        app.listen(PORT, () => {
+            console.log(`Server is running on port ${PORT}`);
+        });
+
+    } catch (error) {
+        console.error("MongoDB connection error:", error);
+    }
+}
+
+startServer();
