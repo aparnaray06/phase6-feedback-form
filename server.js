@@ -47,9 +47,16 @@ app.post("/feedback", async (req, res) => {
         res.status(201).json({
             message: "Feedback saved successfully",
         });
-    } catch (error) {
+    }
+    // catch (error) {
+    //     res.status(500).json({
+    //         error: "Something went wrong",
+    //     });
+    // }
+    catch (error) {
+        console.error("POST /feedback ERROR:", error);
         res.status(500).json({
-            error: "Something went wrong",
+            error: error.message
         });
     }
 });
@@ -68,35 +75,35 @@ app.get("/feedback", async (req, res) => {
 });
 
 //PUT ROUT=======
-app.put("/feedback/:id", async (req, res)=>{
-    try{
-        const {id}=req.params;
+app.put("/feedback/:id", async (req, res) => {
+    try {
+        const { id } = req.params;
 
         const name = req.body.name?.trim();
         const rating = Number(req.body.rating);
         const comment = req.body.comment?.trim();
 
         const updatFeedback = await Feedback.findByIdAndUpdate(
-            id, 
+            id,
             {
                 name,
                 rating,
                 comment,
             },
-            {new:true}
+            { new: true }
         )
-        if (!updatFeedback){
+        if (!updatFeedback) {
             return res.status(404).json({
-                error:"Feedback not found",
+                error: "Feedback not found",
             });
         }
         res.status(200).json({
-            message:"Successfull",
-            feedback:updatFeedback,
+            message: "Successfull",
+            feedback: updatFeedback,
         });
-    }catch(error){
+    } catch (error) {
         console.log(error);
-        
+
         res.status(500).json({
             error: "Something went wrong"
         })
@@ -104,11 +111,11 @@ app.put("/feedback/:id", async (req, res)=>{
 })
 
 //DELETE ROUT
-app.delete("/feedback/:id", async (req, res)=>{
-    try{
-        const {id}=req.params;
+app.delete("/feedback/:id", async (req, res) => {
+    try {
+        const { id } = req.params;
 
-       const deleteFeedback =  await Feedback.findByIdAndDelete(id);
+        const deleteFeedback = await Feedback.findByIdAndDelete(id);
 
         // if(!deleteFeedback){
         //     return res.status(404).json({
@@ -116,7 +123,7 @@ app.delete("/feedback/:id", async (req, res)=>{
         //     })
         // }
         res.status(200).json({
-            message:"Feedback deleted successfully",
+            message: "Feedback deleted successfully",
         })
         // if(!deleteFeedback){
         //     return res.status(404).json({
@@ -124,7 +131,7 @@ app.delete("/feedback/:id", async (req, res)=>{
         //     })
         // }
 
-    }catch(error){
+    } catch (error) {
         res.status(500).json({
             error: "something went wrong"
         })
