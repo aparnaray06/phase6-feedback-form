@@ -1,0 +1,250 @@
+:root {
+    --ink: #1f2933;
+    --muted: #6b7280;
+    --paper: #fffdf9;
+    --canvas: #f3f5f2;
+    --line: #dce3df;
+    --accent: #176b67;
+    --accent-dark: #0f514e;
+    --shadow: 0 18px 45px rgba(31, 41, 51, 0.08);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #f3f5f2 0%, #edf2f0 100%);
+    color: var(--ink);
+    font-family: "Trebuchet MS", sans-serif;
+    line-height: 1.5;
+}
+
+nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 22px max(6%, calc((100% - 1080px) / 2));
+    background: rgba(255, 253, 249, 0.92);
+    border-bottom: 1px solid var(--line);
+}
+
+nav h2,
+.card h1,
+.page-title,
+.feedback-card h2,
+.empty h2 {
+    font-family: Georgia, serif;
+    font-weight: 500;
+    letter-spacing: 0;
+}
+
+nav h2 {
+    font-size: 1.35rem;
+}
+
+nav a,
+.button-link {
+    color: var(--accent);
+    font-weight: 700;
+    text-decoration: none;
+}
+
+nav a:hover,
+nav a:focus-visible {
+    color: var(--accent-dark);
+}
+
+.container {
+    width: min(90%, 760px);
+    margin: 64px auto;
+}
+
+.card,
+.feedback-card,
+.empty {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    box-shadow: var(--shadow);
+}
+
+.card {
+    max-width: 620px;
+    margin: auto;
+    padding: clamp(28px, 6vw, 52px);
+    border-radius: 4px;
+}
+
+.card h1,
+.page-title {
+    text-align: center;
+    font-size: clamp(2rem, 5vw, 2.8rem);
+    line-height: 1.1;
+}
+
+.card h1 {
+    margin-bottom: 12px;
+}
+
+.subtitle {
+    margin-bottom: 34px;
+    color: var(--muted);
+    text-align: center;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    margin-bottom: 7px;
+    font-size: 0.9rem;
+    font-weight: 700;
+}
+
+input,
+select,
+textarea {
+    width: 100%;
+    margin-bottom: 21px;
+    padding: 13px 14px;
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    background: #fff;
+    color: var(--ink);
+    font: inherit;
+    font-size: 0.95rem;
+    transition: border-color 160ms ease, box-shadow 160ms ease;
+}
+
+textarea {
+    resize: vertical;
+}
+
+input::placeholder,
+textarea::placeholder {
+    color: #9aa3a1;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(23, 107, 103, 0.12);
+}
+
+button,
+.button-link {
+    display: inline-block;
+    border: 0;
+    border-radius: 3px;
+    background: var(--accent);
+    color: #fff;
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 160ms ease, transform 160ms ease;
+}
+
+button {
+    padding: 14px 18px;
+    font-size: 1rem;
+}
+
+button:hover,
+.button-link:hover {
+    background: var(--accent-dark);
+    transform: translateY(-1px);
+}
+
+button:disabled {
+    cursor: wait;
+    opacity: 0.65;
+}
+
+#message {
+    margin-top: 20px;
+    color: var(--accent);
+    text-align: center;
+}
+
+.page-title {
+    margin-bottom: 32px;
+}
+
+.feedback-card {
+    margin-bottom: 18px;
+    padding: 26px;
+    border-radius: 4px;
+}
+
+.feedback-card h2 {
+    margin-bottom: 7px;
+    font-size: 1.45rem;
+}
+
+.rating {
+    margin-bottom: 14px;
+    letter-spacing: 2px;
+}
+
+.feedback-card p {
+    margin-bottom: 20px;
+    color: #56605f;
+    line-height: 1.7;
+}
+
+.feedback-card button {
+    margin-right: 8px;
+    padding: 9px 14px;
+    font-size: 0.88rem;
+}
+
+.feedback-card button:last-child {
+    background: transparent;
+    border: 1px solid #c96b63;
+    color: #b34f47;
+}
+
+.feedback-card button:last-child:hover {
+    background: #fff1ef;
+}
+
+.empty {
+    padding: 48px 28px;
+    border-radius: 4px;
+    text-align: center;
+}
+
+.empty p {
+    margin: 10px 0 24px;
+    color: var(--muted);
+}
+
+.button-link {
+    padding: 12px 20px;
+}
+
+@media (max-width: 600px) {
+    nav {
+        padding: 18px 5%;
+    }
+
+    nav h2 {
+        font-size: 1.1rem;
+    }
+
+    nav a {
+        font-size: 0.9rem;
+    }
+
+    .container {
+        width: 90%;
+        margin: 38px auto;
+    }
+}
