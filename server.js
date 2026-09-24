@@ -112,7 +112,7 @@ app.put("/feedback/:id", ensureDatabaseAvailable, async (req, res) => {
                 rating,
                 comment,
             },
-            { new: true }
+            { returnDocument: "after" }
         );
 
         if (!updatedFeedback) {
