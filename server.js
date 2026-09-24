@@ -12,22 +12,37 @@ app.use(express.json());
 app.use(express.static("public"));
 
 mongoose.connect(process.env.MONGO_URI)
-.then(()=>{
-    console.log("MongoDB connected");
-    
-    app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
-});
-})
-.catch((error)=>{
-    console.log("MongoDB connection error:", error.message);
-})
+    .then(() => {
+        console.log("MongoDB connected");
+
+        app.listen(PORT, () => {
+            console.log(`Server is running on port ${PORT}`);
+        });
+    })
+    .catch((error) => {
+        console.log("MongoDB connection error:", error.message);
+    })
 
 // Schema
 const feedbackSchema = new mongoose.Schema({
-    name: { type: String, required: true, trim: true },
-    rating: { type: Number, required: true, min: 1, max: 5 },
-    comment: { type: String, required: true, trim: true },
+    name:
+    {
+        type: String,
+        required: true,
+        trim: true
+    },
+    rating: {
+        type: Number,
+        required: true,
+        min: 1,
+        max: 5
+    },
+    comment:
+    {
+        type: String,
+        required: true,
+        trim: true
+    },
 }, { timestamps: true });
 
 // Model
